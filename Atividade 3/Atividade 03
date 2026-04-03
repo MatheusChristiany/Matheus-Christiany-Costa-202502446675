@@ -1,1 +1,88 @@
+Segue um exemplo usando panda com base no cénario da atividade anterior:
 
+📊 Exemplo de análise de vendas com Pandas
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 🔹 Criando um dataset fake
+dados = {
+    'data': [
+        '2024-01-10', '2024-01-15', '2024-02-10',
+        '2024-02-20', '2024-03-05', '2024-03-18'
+    ],
+    'vendedor': ['Ana', 'Bruno', 'Ana', 'Carlos', 'Bruno', 'Ana'],
+    'categoria': ['Eletrônicos', 'Roupas', 'Eletrônicos', 'Roupas', 'Alimentos', 'Eletrônicos'],
+    'total_venda': [100, 250, 300, 150, 80, 400]
+}
+
+df = pd.DataFrame(dados)
+
+print("📌 DataFrame inicial:")
+print(df)
+
+# -----------------------------------
+# ✅ D1 - Faturamento mês a mês
+# -----------------------------------
+df['data'] = pd.to_datetime(df['data'])
+df['mes'] = df['data'].dt.month
+
+faturamento_mensal = df.groupby('mes')['total_venda'].sum()
+
+print("\n📊 Faturamento mensal:")
+print(faturamento_mensal)
+
+# -----------------------------------
+# ✅ D2 - Gráfico de linha
+# -----------------------------------
+plt.plot(faturamento_mensal.index, faturamento_mensal.values, marker='o')
+plt.title('Faturamento por mês')
+plt.xlabel('Mês')
+plt.ylabel('Total')
+plt.grid()
+plt.show()
+
+# -----------------------------------
+# ✅ D3 - Maior ticket médio
+# -----------------------------------
+ticket_medio = df.groupby('vendedor')['total_venda'].mean()
+
+top_vendedor = ticket_medio.idxmax()
+valor = ticket_medio.max()
+
+print(f"\n🏆 Vendedor com maior ticket médio: {top_vendedor} ({valor})")
+
+# -----------------------------------
+# ✅ D4 - Vendas acima de 200
+# -----------------------------------
+vendas_altas = df[df['total_venda'] > 200]
+
+analise_categoria = vendas_altas.groupby('categoria')['total_venda'].sum()
+
+print("\n💰 Categorias com vendas acima de 200:")
+print(analise_categoria)
+
+# -----------------------------------
+# ✅ D5 - Valores nulos
+# -----------------------------------
+
+# Adicionando linhas com nulos
+linhas_nulas = pd.DataFrame({
+    'data': [None]*3,
+    'vendedor': [None]*3,
+    'categoria': [None]*3,
+    'total_venda': [None]*3
+})
+
+df = pd.concat([df, linhas_nulas], ignore_index=True)
+
+print("\n🔍 Valores nulos:")
+print(df.isnull().sum())
+
+# Tratando nulos
+df['total_venda'] = df['total_venda'].fillna(0)
+df['vendedor'] = df['vendedor'].fillna('Desconhecido')
+df['categoria'] = df['categoria'].fillna('Sem categoria')
+
+print("\n✅ Dados tratados:")
+print(df)
