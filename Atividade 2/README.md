@@ -42,13 +42,3 @@ analise-vendas/
 ```
 
 ---
-
-## 📌 Exemplo de gráfico
-
-(Espaço para print do gráfico 📸)
-
----
-
-## 👨‍💻 Autor
-
-Seu nome aqui
