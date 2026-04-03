@@ -39,5 +39,3 @@ analise-vendas/
 ├── data/
 ├── src/
 ```
-
-Seu nome aqui
