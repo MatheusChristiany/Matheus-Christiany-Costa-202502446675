@@ -1,1 +1,61 @@
+📁 Estrutura do projeto
+meu-projeto-plotly/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+🧠 1. Código principal (app.py)
+import pandas as pd
+import plotly.express as px
 
+def carregar_dados():
+    data = {
+        "Produto": ["A", "B", "C", "D", "E", "F"],
+        "Categoria": ["Eletrônicos", "Eletrônicos", "Roupas", "Roupas", "Alimentos", "Alimentos"],
+        "Preco": [1200, 800, 150, 200, 20, 35],
+        "Vendas": [30, 45, 100, 80, 300, 250],
+        "Regiao": ["Norte", "Sul", "Sudeste", "Nordeste", "Norte", "Sul"]
+    }
+    return pd.DataFrame(data)
+
+def filtrar_dados(df, categoria=None):
+    if categoria:
+        return df[df["Categoria"] == categoria]
+    return df
+
+def criar_grafico(df):
+    fig = px.scatter(
+        df,
+        x="Preco",
+        y="Vendas",
+        color="Categoria",
+        size="Vendas",
+        title="Relação entre Preço e Vendas",
+        hover_data={
+            "Produto": True,
+            "Categoria": True,
+            "Preco": ":.2f",
+            "Vendas": True,
+            "Regiao": True
+        }
+    )
+
+    fig.update_layout(template="plotly_dark", title_x=0.5)
+    fig.show()
+
+if __name__ == "__main__":
+    df = carregar_dados()
+
+    # você pode mudar aqui o filtro
+    df_filtrado = filtrar_dados(df, categoria="Eletrônicos")
+
+    criar_grafico(df_filtrado)
+📦 2. Dependências (requirements.txt)
+pandas
+plotly
+🚫 3. .gitignore
+__pycache__/
+*.pyc
+.env
+venv/
